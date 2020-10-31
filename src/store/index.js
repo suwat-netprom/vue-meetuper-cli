@@ -4,7 +4,7 @@ import Vuex from 'vuex'
 import meetups from './modules/meetups'
 import threads from './modules/threads'
 import categories from './modules/categories'
-import auth from "@/store/modules/auth";
+import auth from './modules/auth'
 
 Vue.use(Vuex)
 

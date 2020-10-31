@@ -1,12 +1,13 @@
+
 export default {
-  data() {
+  data () {
     return {
-      pageLoader_isLoaded: false
+      pageLoader_isDataLoaded: false
     }
   },
   methods: {
-    pageLoader_resolveData() {
-      this.pageLoader_isLoaded = true
+    pageLoader_resolveData () {
+      this.pageLoader_isDataLoaded = true
     }
   }
 }

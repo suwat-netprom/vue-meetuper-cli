@@ -1,4 +1,5 @@
 const User = require('../models/users');
+
 const passport = require('passport');
 
 exports.getUsers = function(req, res) {
@@ -20,8 +21,8 @@ exports.getCurrentUser = function (req, res, next) {
     return res.sendStatus(422);
   }
 
-  // For Session Auth!
-  // return res.json(user);
+  // Only For Session Auth !!!
+  //return res.json(user);
   return res.json(user.toAuthJSON());
 };
 
@@ -66,7 +67,8 @@ exports.register = function(req, res) {
   })
 }
 
-exports.login = function (req, res, next) {
+
+exports.login = function (req, res, next){
   const { email, password } = req.body
 
   if (!email) {
@@ -93,10 +95,10 @@ exports.login = function (req, res, next) {
     }
 
     if (passportUser) {
-      // Only For Session Auth!!!
+      // Only For Session Auth !!!
       // req.login(passportUser, function (err) {
       //   if (err) { next(err); }
-
+      //
       //   return res.json(passportUser)
       // });
 
@@ -111,10 +113,21 @@ exports.login = function (req, res, next) {
   })(req, res, next)
 }
 
-exports.logout = function (req, res) {
+exports.logout = function (req, res){
   req.logout()
   return res.json({status: 'Session destroyed!'})
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 

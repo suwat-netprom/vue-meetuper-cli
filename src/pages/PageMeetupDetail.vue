@@ -136,170 +136,169 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
-
-export default {
-  computed: {
-    ...mapState({
-      meetup: state => state.meetups.item,
-      threads: state => state.threads.items,
-    }),
-    meetupCreator () {
-      return this.meetup.meetupCreator || {}
+  import { mapActions, mapState } from 'vuex'
+  export default {
+    computed: {
+      ...mapState({
+        meetup: state => state.meetups.item,
+        threads: state => state.threads.items
+      }),
+      meetupCreator () {
+        return this.meetup.meetupCreator || {}
+      }
+    },
+    created () {
+      const meetupId = this.$route.params.id
+      this.fetchMeetupById(meetupId)
+      this.fetchThreads(meetupId)
+    },
+    methods: {
+      ...mapActions('meetups', ['fetchMeetupById']),
+      ...mapActions('threads', ['fetchThreads'])
     }
-  },
-  created () {
-    const meetupId = this.$route.params.id
-    this.fetchMeetupById(meetupId)
-    this.fetchThreads(meetupId)
-  },
-  methods: {
-    ...mapActions('meetups', ['fetchMeetupById']),
-    ...mapActions('threads', ['fetchThreads'])
   }
-}
 </script>
 
 <style scoped lang="scss">
-.tag.is-warning {
-  opacity: 0.5;
-}
+  .tag.is-warning {
+    opacity: 0.5;
+  }
 
-.meetup-detail-page {
-  background-color: #f5f5f5;
+  .meetup-detail-page {
+    background-color: #f5f5f5;
 
-  .mapouter{text-align:right;height:500px;width:600px;}.gmap_canvas {overflow:hidden;background:none!important;height:500px;width:600px;}
+    .mapouter{text-align:right;height:500px;width:600px;}.gmap_canvas {overflow:hidden;background:none!important;height:500px;width:600px;}
 
-  .hero-body {
-    background-color: white;
-    border: 1px solid rgba(46,62,72,.12);
-    color: white;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1531263060782-b024de9b9793?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-
-    > p,h1,h2, strong {
+    .hero-body {
+      background-color: white;
+      border: 1px solid rgba(46,62,72,.12);
       color: white;
+      background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1531263060782-b024de9b9793?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+
+        > p,h1,h2, strong {
+          color: white;
+        }
+      }
+
+    .meetup-side-box {
+      background-color: white;
+      border-radius: 10px;
+      font-size: 16px;
+      padding: 15px;
     }
   }
 
-  .meetup-side-box {
-    background-color: white;
-    border-radius: 10px;
-    font-size: 16px;
-    padding: 15px;
+  pre,
+  .message {
+    max-width: 960px;
   }
-}
 
-pre,
-.message {
-  max-width: 960px;
-}
+  .v-center {
+    align-items: center;
+  }
 
-.v-center {
-  align-items: center;
-}
+  li {margin: 10px}
 
-li {margin: 10px}
-
-.hero.is-primary {
+  .hero.is-primary {
   background: linear-gradient(to top right, #524ad0 10%, #D099FA);
-}
-
-.box {
-  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.2);
-}
-
-.box span.icon {
-  float: right;
-  font-size: 1.7em;
-  padding: 2rem 2rem 0 0;
-}
-
-.is-large.fab {
-  font-size: 7em;
-}
-
-.is-large.fas {
-  font-size: 5em;
-  margin-left: 0.2em;
-}
-
-.media-content {overflow: hidden;}
-
-.menu-list li a:hover {
-  background: #d9d9d9;
-}
-
-.token.number {
-  display: inline;
-  padding: inherit;
-  font-size: inherit;
-  line-height: inherit;
-  text-align: inherit;
-  vertical-align: inherit;
-  border-radius: inherit;
-  font-weight: inherit;
-  white-space: inherit;
-  background: inherit;
-  margin: inherit;
-}
-.footer {background-color: white;}
-
-// Post Create Input START
-.textarea-post {
-  padding-bottom: 30px;
-}
-
-.post-create {
-  margin-bottom: 15px;
-}
-// Post Create END
-
-// Thread List START
-.content {
-  figure {
-    margin-bottom: 0;
-  }
-}
-
-.media-content-threads {
-  background-color: #f1f1f1;
-  padding: 3px 20px;
-  border-radius: 10px;
-  margin-right: 40px;
-  width: 100px;
-}
-
-.media-left.user-image {
-  margin: 0;
-  margin-right: 15px;
-}
-
-.post-item {
-
-}
-
-.media + .media {
-  border: none;
-  margin-top: 0;
-}
-
-.post-content {
-  margin: 0;
-  &-message {
-    font-size: 16px;
   }
 
-  .author {
-    font-size: 18px;
+  .box {
+    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.2);
   }
 
-  .post-time {
-    font-size: 16px;
+  .box span.icon {
+    float: right;
+    font-size: 1.7em;
+    padding: 2rem 2rem 0 0;
   }
-}
-// Thread List END
+
+  .is-large.fab {
+    font-size: 7em;
+  }
+
+  .is-large.fas {
+    font-size: 5em;
+    margin-left: 0.2em;
+  }
+
+  .media-content {overflow: hidden;}
+
+  .menu-list li a:hover {
+    background: #d9d9d9;
+  }
+
+  .token.number {
+    display: inline;
+    padding: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    text-align: inherit;
+    vertical-align: inherit;
+    border-radius: inherit;
+    font-weight: inherit;
+    white-space: inherit;
+    background: inherit;
+    margin: inherit;
+  }
+  .footer {background-color: white;}
+
+  // Post Create Input START
+  .textarea-post {
+    padding-bottom: 30px;
+  }
+
+  .post-create {
+    margin-bottom: 15px;
+  }
+  // Post Create END
+
+  // Thread List START
+  .content {
+    figure {
+      margin-bottom: 0;
+    }
+  }
+
+  .media-content-threads {
+    background-color: #f1f1f1;
+    padding: 3px 20px;
+    border-radius: 10px;
+    margin-right: 40px;
+    width: 100px;
+  }
+
+  .media-left.user-image {
+    margin: 0;
+    margin-right: 15px;
+  }
+
+  .post-item {
+
+  }
+
+  .media + .media {
+    border: none;
+    margin-top: 0;
+  }
+
+  .post-content {
+    margin: 0;
+    &-message {
+      font-size: 16px;
+    }
+
+    .author {
+      font-size: 18px;
+    }
+
+    .post-time {
+      font-size: 16px;
+    }
+  }
+  // Thread List END
 </style>
 

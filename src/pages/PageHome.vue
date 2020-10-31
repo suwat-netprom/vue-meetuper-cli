@@ -1,23 +1,23 @@
 <template>
   <div>
     <AppHero />
-    <div v-if="pageLoader_isLoaded" class="container">
+    <div v-if="pageLoader_isDataLoaded" class="container">
       <section class="section">
-        <div class="m-b-lg">
-          <h1 class="title is-inline">Featured Meetups in "Location"</h1>
-          <AppDropdown />
-          <button class="button is-primary is-pulled-right m-r-sm">Create Meetups</button>
-          <router-link :to="{name: 'PageMeetupFind'}"
-                       class="button is-primary is-pulled-right m-r-sm">
-            All
-          </router-link>
-        </div>
-        <div class="row columns is-multiline">
-          <!-- Iterate your meetups here! -->
-          <MeetupItem v-for="meetup in meetups"
-                      :key="meetup._id"
-                      :meetup="meetup" />
-        </div>
+      <div class="m-b-lg">
+        <h1 class="title is-inline">Featured Meetups in "Location"</h1>
+        <AppDropdown />
+        <button class="button is-primary is-pulled-right m-r-sm">Create Meetups</button>
+        <router-link :to="{name: 'PageMeetupFind'}"
+                     class="button is-primary is-pulled-right m-r-sm">
+                   All
+        </router-link>
+      </div>
+      <div class="row columns is-multiline">
+        <!-- Iterate your meetups here! -->
+        <MeetupItem v-for="meetup in meetups"
+                    :key="meetup._id"
+                    :meetup="meetup" />
+      </div>
       </section>
       <section class="section">
         <div>
@@ -30,43 +30,42 @@
         </div>
       </section>
     </div>
-    <div class="container" v-else>
-      <AppSpinner/>
+    <div v-else class="container">
+      <AppSpinner />
     </div>
   </div>
 </template>
 
 <script>
-import CategoryItem from '@/components/CategoryItem'
-import MeetupItem from '@/components/MeetupItem'
-import { mapActions, mapState } from 'vuex'
-import PageLoader from "@/mixins/PageLoader";
-
-export default {
-  components: {
-    CategoryItem,
-    MeetupItem
-  },
-  mixins: [PageLoader],
-  computed: {
-    ...mapState({
-      meetups: state => state.meetups.items,
-      categories: state => state.categories.items
-    })
-  },
-  created () {
-    Promise.all([this.fetchMeetups(), this.fetchCategories()]).then((result)=>{
-      this.pageLoader_resolveData()
-    }).catch((err)=>{
-      console.log(err);
-      this.pageLoader_resolveData()
-    })
-  },
-  methods: {
-    ...mapActions('meetups', ['fetchMeetups']),
-    ...mapActions('categories', ['fetchCategories'])
+  import CategoryItem from '@/components/CategoryItem'
+  import MeetupItem from '@/components/MeetupItem'
+  import { mapActions, mapState } from 'vuex'
+  import PageLoader from  '@/mixins/PageLoader'
+  export default {
+    components: {
+      CategoryItem,
+      MeetupItem
+    },
+    mixins: [PageLoader],
+    computed: {
+      ...mapState({
+        meetups: state => state.meetups.items,
+        categories: state => state.categories.items
+      })
+    },
+    created () {
+      Promise.all([this.fetchMeetups(), this.fetchCategories()])
+        .then(() => this.pageLoader_resolveData())
+        .catch((err) => {
+          console.error(err)
+          this.pageLoader_resolveData()
+        })
+    },
+    methods: {
+      ...mapActions('meetups', ['fetchMeetups']),
+      ...mapActions('categories', ['fetchCategories'])
+    }
   }
-}
 </script>
 
 <style scoped>

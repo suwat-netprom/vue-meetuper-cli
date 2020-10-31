@@ -1,11 +1,12 @@
 <template>
   <div class="column is-one-third">
-<!--    <router-link :to="'/meetups/'+meetup._id" class="card large">-->
+    <!-- <router-link :to="'/meetups/' + meetup._id" class="card large"> -->
     <div class="card large">
-      <router-link :to="{ name: 'PageMeetupDetail', params: { id:meetup._id } }" class="card-meetup-link">
+      <router-link :to="{name: 'PageMeetupDetail', params: {id: meetup._id}}" class="card-meetup-link" >
         <div class="card-image">
           <figure class="image is-4by3">
-            <img :src="meetup.image">
+              <!-- get here meetup image -->
+              <img :src="meetup.image" alt="Image">
           </figure>
         </div>
         <div class="card-content">
@@ -13,42 +14,45 @@
             <div class="media-left">
               <div class="level-item has-text-centered">
                 <div>
+                  <!-- get here startDate, don't worry about formatting -->
                   <p class="title">{{meetup.startDate | formatDate('MMM')}}</p>
                   <p class="title">{{meetup.startDate | formatDate('D')}}</p>
                 </div>
               </div>
             </div>
             <div class="media-content">
-              <p class="title is-4 no-padding is-marginless">{{meetup.title}}</p>
-              <span class="tag is-success">{{meetup.category.name}}</span>
-              <p class="subtitle is-7">{{meetup.location}}</p>
+              <!-- get here meetup title -->
+                <p class="title is-4 no-padding is-marginless">{{meetup.title}}</p>
+                <!-- get here meetup category -->
+                <span class="tag is-success">{{meetup.category.name}}</span>
+                <!-- get here meetup location -->
+                <p class="subtitle is-7">{{meetup.location}}</p>
             </div>
           </div>
           <div class="content">
-            {{meetup.description}}
-            <div class="background-icon"><span class="icon-twitter"></span></div>
+              <!-- get here meetup description -->
+              {{meetup.description}}
+              <div class="background-icon"><span class="icon-barcode"></span></div>
           </div>
         </div>
       </router-link>
     </div>
-
   </div>
 </template>
 
 <script>
-export default {
-  name: "MeetupItem",
-  props: {
-    meetup: {
-      required: true,
-      type: Object
+  export default {
+    props: {
+      meetup: {
+        required: true,
+        type: Object
+      }
     }
   }
-}
 </script>
 
 <style scoped>
-.card-meetup-link{
-  color: black;
-}
+  .card-meetup-link {
+    color: black;
+  }
 </style>

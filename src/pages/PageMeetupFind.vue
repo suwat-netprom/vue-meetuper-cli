@@ -28,8 +28,8 @@
         <div class="columns cover is-multiline">
           <div v-for="meetup of meetups" :key="meetup._id" class="column is-one-third" :style="{'min-height': '160px'}">
             <router-link :to="'/meetups/' + meetup._id" class="meetup-card-find"
-                         href="#"
-                         :style="{'background-image': `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(${meetup.image})`}">
+               href="#"
+               :style="{'background-image': `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(${meetup.image})`}">
               <div class="meetup-card-find-content">
                 <div class="meetup-card-find-content-date is-pulled-right">
                   <span class="month">{{meetup.startDate | formatDate('MMM')}}</span>
@@ -56,112 +56,112 @@
 </template>
 
 <script>
-export default {
-  computed: {
-    meetups() {
-      return this.$store.state.meetups.items
+  export default {
+    computed: {
+      meetups () {
+        return this.$store.state.meetups.items
+      }
+    },
+    created () {
+      this.$store.dispatch('meetups/fetchMeetups')
     }
-  },
-  created () {
-    this.$store.dispatch('meetups/fetchMeetups')
   }
-}
 </script>
 
 <style lang="scss" scoped>
-.page-find {
-  margin-top: 50px;
-}
-.meetup-card-find {
-  width: 100%;
-  height: 180px;
-  position: relative;
-  display: block;
-  border-radius: 3px;
-  text-decoration: none;
-  box-shadow: 0 0 1px rgba(0,0,0,.05);
-  background-clip: content-box;
-  background-size: cover;
-  background-position: 50% 20%;
-  border: 1px solid rgba(0,0,0,.12);
-  -webkit-tap-highlight-color: transparent;
-
-  &-interest {
-    position: absolute;
-    bottom: 12px;
-    right: 12px;
-    > p {
-      font-weight: bold;
-    }
+  .page-find {
+    margin-top: 50px;
   }
+  .meetup-card-find {
+    width: 100%;
+    height: 180px;
+    position: relative;
+    display: block;
+    border-radius: 3px;
+    text-decoration: none;
+    box-shadow: 0 0 1px rgba(0,0,0,.05);
+    background-clip: content-box;
+    background-size: cover;
+    background-position: 50% 20%;
+    border: 1px solid rgba(0,0,0,.12);
+    -webkit-tap-highlight-color: transparent;
 
-  .title {
-    color: white;
-  }
-
-  .subtitle {
-    color: white;
-  }
-
-  &-content {
-    &-date {
-      margin: 10px;
-
-      width: 70px;
-      text-align: center;
-      border-radius: 50%;
-
-      .day {
-        display: block;
-        font-size: 21px;
-        color: white;
-        font-weight: bold;
-      }
-
-      .month {
-        display: block;
-        color: #ff5050;
-        font-weight: bold;
-        font-size: 23px;
-        margin-bottom: -5px;
-      }
-    }
-
-    &-info {
+    &-interest {
       position: absolute;
-      bottom: 0;
-      left: 0;
-      padding: 15px;
-      width: 100%;
+      bottom: 12px;
+      right: 12px;
+      > p {
+        font-weight: bold;
+      }
+    }
+
+    .title {
+      color: white;
+    }
+
+    .subtitle {
+      color: white;
+    }
+
+    &-content {
+      &-date {
+        margin: 10px;
+
+        width: 70px;
+        text-align: center;
+        border-radius: 50%;
+
+        .day {
+          display: block;
+          font-size: 21px;
+          color: white;
+          font-weight: bold;
+        }
+
+        .month {
+          display: block;
+          color: #ff5050;
+          font-weight: bold;
+          font-size: 23px;
+          margin-bottom: -5px;
+        }
+      }
+
+      &-info {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        padding: 15px;
+        width: 100%;
+      }
     }
   }
-}
 
-.text-overlay-wrapper {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  left: 0;
-  top: 0;
-}
+  .text-overlay-wrapper {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+  }
 
-.lookup-prebody {
-  position: relative;
-}
+  .lookup-prebody {
+    position: relative;
+  }
 
-.meetup-lookup {
-  width: 960px;
-  margin: 0 auto;
-  background-color: #1a2238;
-  padding: 20px;
-  color: white;
-}
+  .meetup-lookup {
+    width: 960px;
+    margin: 0 auto;
+    background-color: #1a2238;
+    padding: 20px;
+    color: white;
+  }
 
-.meetup-lookup-wrap {
-  width: 100%;
-  z-index: 2;
-  position: absolute;
-  top: auto;
-  bottom: -42px;
-}
+  .meetup-lookup-wrap {
+    width: 100%;
+    z-index: 2;
+    position: absolute;
+    top: auto;
+    bottom: -42px;
+  }
 </style>

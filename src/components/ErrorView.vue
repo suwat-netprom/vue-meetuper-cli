@@ -9,38 +9,37 @@
 </template>
 
 <script>
-export default {
-  name: "ErrorView",
-  props: {
-    title: {
-      required: true,
-      type: String,
-    },
-    status: {
-      required: true,
-      type: String
-    },
-    navigateToPage: {
-      required: true,
-      type: String
-    },
-    navigateToText: {
-      required: true,
-      type: String
+  export default {
+    props: {
+      title: {
+        required: true,
+        type: String
+      },
+      status: {
+        required: true,
+        type: String
+      },
+      navigateToPage: {
+        required: true,
+        type: String
+      },
+      navigateToText: {
+        required: true,
+        type: String
+      }
     }
   }
-}
 </script>
 
 <style scoped>
-.title {
-  font-size: 40px;
-}
-.subtitle {
-  font-size: 140px;
-  text-align: center;
-}
-.notFoundContainer {
-  margin-top: 80px;
-}
+  .title {
+    font-size: 40px;
+  }
+  .subtitle {
+    font-size: 140px;
+    text-align: center;
+  }
+  .notFoundContainer {
+    margin-top: 80px;
+  }
 </style>
