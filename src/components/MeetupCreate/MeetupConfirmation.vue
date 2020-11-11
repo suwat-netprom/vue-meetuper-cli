@@ -19,7 +19,7 @@
         <span class="result-title">
         Start Date
         </span>
-        <p>{{meetupToCreate.startDate}}</p>
+        <p>{{meetupToCreate.startDate | formatDate}}</p>
       </div>
       <div>
         <span class="result-title">
@@ -43,7 +43,7 @@
         <span class="result-title">
         Image
         </span>
-        <p>{{meetupToCreate.imag}}</p>
+        <p>{{meetupToCreate.image}}</p>
       </div>
       <div>
         <span class="result-title">

@@ -12,31 +12,40 @@
       </div>
     </div>
     <div class="field">
-      <label class="title m-b-sm">Starts At</label>
-      <input v-model="form.startDate"
+      <label class="title m-b-sm">Start Date</label>
+      <!--<input v-model="form.startDate"
              @blur="$v.form.startDate.$touch()"
              class="input"
              type="text"
-             placeholder="Starts At">
+             placeholder="Starts At">-->
+      <datepicker @input="setDate"
+                  :disabled-dates="disabledDates"
+                  :input-class="'input'"
+                  :placeholder="new Date() | formatDate"></datepicker>
       <div v-if="$v.form.startDate.$error">
         <span v-if="!$v.form.startDate.required" class="help is-danger">Starts at is required</span>
       </div>
     </div>
     <div class="field">
       <label class="title m-b-sm">From</label>
-      <input v-model="form.timeFrom"
+      <!--<input v-model="form.timeFrom"
              @blur="$v.form.timeFrom.$touch()"
              class="input"
              type="text"
-             placeholder="Time From">
+             placeholder="Time From">-->
+
+      <vue-timepicker :minute-interval="10"
+                      @change="changeTime($event, 'timeFrom')"></vue-timepicker>
     </div>
     <div class="field">
       <label class="title m-b-sm">To</label>
-      <input v-model="form.timeTo"
+      <!--<input v-model="form.timeTo"
              @blur="$v.form.timeTo.$touch()"
              class="input"
              type="text"
-             placeholder="Time to">
+             placeholder="Time to">-->
+      <vue-timepicker :minute-interval="10"
+                      @change="changeTime($event, 'timeTo')"></vue-timepicker>
     </div>
     <div class="field">
       <label class="title m-b-sm">Please Choose the Category.</label>
@@ -60,11 +69,25 @@
 </template>
 
 <script>
+import Datepicker from 'vuejs-datepicker'
+import VueTimepicker from 'vue2-timepicker'
+import moment from 'moment'
 import { required } from 'vuelidate/lib/validators'
 export default {
   name: "MeetupDetail",
+  components: {
+    Datepicker,
+    VueTimepicker
+  },
   data () {
     return {
+      disabledDates: {
+        customPredictor: (date) => {
+          const today = new Date()
+          const yesterday = today.setDate(today.getDate() - 1)
+          return date < yesterday
+        }
+      },
       form: {
         title: null,
         startDate: null,
@@ -91,6 +114,17 @@ export default {
   methods: {
     emitFormData(){
       this.$emit('stepUpdated', {data: this.form, isValid: !this.$v.$invalid})
+    },
+    setDate (date) {
+      this.form.startDate = moment(date).format()
+      this.emitFormData()
+    },
+    changeTime({data}, field) {
+      const minute = data.mm || '00'
+      const hours = data.HH || '00'
+
+      this.form[field] = hours + ':' + minute
+      this.emitFormData()
     }
   }
 }
