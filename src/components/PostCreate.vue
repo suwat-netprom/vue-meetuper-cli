@@ -1,5 +1,5 @@
 <template>
-  <!--<div v-with-warning:red.prevent="'What a nice day :)'"></div>-->
+  <!-- <div v-with-warning:red.prevent="'What a nice day (:'"> </div> -->
   <form class="post-create">
     <div class="field">
       <textarea v-auto-expand
@@ -7,20 +7,17 @@
                 class="textarea textarea-post"
                 placeholder="Write a post"
                 rows="1"></textarea>
-      <button :disabled="!text" @click.prevent="sendPost" class="button is-primary m-t-sm">Send</button>
+      <button :disabled="!text"
+              @click.prevent="sendPost"
+              class="button is-primary m-t-sm">Send</button>
     </div>
   </form>
 </template>
 
 <script>
-import withWarning from "@/direatives/withWarning";
-import autoExpand from "@/direatives/autoExpand";
+//import autoExpand from '@/directives/autoExpand'
 export default {
-  name: "PostCreate",
-  directives: {
-    withWarning,
-    autoExpand
-  },
+  //directives: {autoExpand},
   props: {
     threadId: {
       required: true,
@@ -32,15 +29,21 @@ export default {
       text: null
     }
   },
-  created() {
-    console.log('this.threadId');
-    console.log(this.threadId);
+  computed: {
+    meetup () {
+      return this.$store.state.meetups.item
+    }
   },
   methods: {
     sendPost () {
-      this.$store.dispatch('threads/sendPost', {text: this.text, threadId: this.threadId}).then(() => {
-        this.text = ''
-      })
+      this.$store.dispatch('threads/sendPost', {text: this.text, threadId: this.threadId})
+        .then((createdPost) => {
+          this.$socket.emit('meetup/postSaved',
+            {...createdPost, meetup: this.meetup._id }
+          )
+
+          this.text = ''
+        })
     }
   }
 }

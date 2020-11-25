@@ -41,6 +41,8 @@
   import MeetupItem from '@/components/MeetupItem'
   import { mapActions, mapState, mapGetters } from 'vuex'
   import PageLoader from  '@/mixins/PageLoader'
+
+  import Vue from 'vue'
   export default {
     components: {
       CategoryItem,

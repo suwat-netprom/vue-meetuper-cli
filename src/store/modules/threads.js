@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import axios from 'axios'
-import axiosInstance from "@/services/axios";
+import axiosInstance from '@/services/axios'
 
 export default {
   namespaced: true,
@@ -26,22 +26,24 @@ export default {
         .then(res => {
           debugger
           const createdThread = res.data
-        const index = state.items.length
+          const index = state.items.length
 
           commit('addItemToArray', {item: createdThread, index, resource: 'threads'}, {root: true})
           return createdThread
-      })
+        })
     },
-    sendPost ({commit, state, dispatch}, {text, threadId}) {
+    sendPost ({dispatch}, {text, threadId}) {
       const post = {text, thread: threadId}
 
-      return axiosInstance.post('/api/v1/posts', post).then(res => {
+      return axiosInstance.post('/api/v1/posts', post)
+        .then(res => {
           const createdPost = res.data
           dispatch('addPostToThread', {post: createdPost, threadId})
           return createdPost
-      })
+        })
     },
     addPostToThread ({commit, state}, {post, threadId}) {
+      //debugger
       const threadIndex = state.items.findIndex(thread => thread._id === threadId)
 
       if (threadIndex > -1) {
@@ -57,3 +59,9 @@ export default {
     }
   }
 }
+
+
+
+
+
+

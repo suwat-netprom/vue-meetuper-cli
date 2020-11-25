@@ -90,12 +90,12 @@
                       :disabled="true"
                       class="button is-warning">You need authenticate in order to join</button>
               <ThreadCreateModal v-if="isMember || isMeetupOwner"
-                                @threadSubmitted="createThread"
+                                 @threadSubmitted="createThread"
                                  :btnTitle="`Welcome ${authUser.username}, Start a new thread`"
-                                :title="'Create Thread'"/>
+                                 :title="'Create Thread'" />
             </div>
             <ThreadList :threads="orderedThreads"
-                        :canMakePost="canMakePost"/>
+                        :canMakePost="canMakePost" />
           </div>
         </div>
       </div>
@@ -106,7 +106,7 @@
 <script>
 import { mapActions, mapState } from 'vuex'
 import ThreadCreateModal from '@/components/ThreadCreateModal'
-import ThreadList from "@/components/ThreadList"
+import ThreadList from '@/components/ThreadList'
 export default {
   components: {
     ThreadCreateModal,
@@ -136,11 +136,11 @@ export default {
         !this.isMember
     },
     canMakePost () {
-      return this.isAuthenticated && (this.isMeetupOwner || this.isMember)
+      return this.isAuthenticated && (this.isMember || this.isMeetupOwner)
     },
     orderedThreads () {
-        const copyOfThreads = [...this.threads]
-        return copyOfThreads.sort((thread, nextThread) => {
+      const copyOfThreads = [...this.threads]
+      return copyOfThreads.sort((thread, nextThread) => {
         return new Date(nextThread.createdAt) - new Date(thread.createdAt)
       })
     }
@@ -149,10 +149,22 @@ export default {
     const meetupId = this.$route.params.id
     this.fetchMeetupById(meetupId)
     this.fetchThreads(meetupId)
+
+    if (this.isAuthenticated) {
+      this.$socket.emit('meetup/subscribe', meetupId)
+      this.$socket.on('meetup/postPublished', this.addPostToThreadHandler)
+    }
+  },
+  destroyed () {
+    this.$socket.removeListener('meetup/postPublished', this.addPostToThreadHandler)
+    this.$socket.emit('meetup/unsubscribe', this.meetup._id)
   },
   methods: {
     ...mapActions('meetups', ['fetchMeetupById']),
-    ...mapActions('threads', ['fetchThreads', 'postThread']),
+    ...mapActions('threads', ['fetchThreads', 'postThread', 'addPostToThread']),
+    addPostToThreadHandler (post) {
+      this.addPostToThread({post, threadId: post.thread})
+    },
     joinMeetup () {
       this.$store.dispatch('meetups/joinMeetup', this.meetup._id)
     },
@@ -160,11 +172,11 @@ export default {
       this.$store.dispatch('meetups/leaveMeetup', this.meetup._id)
     },
     createThread ({title, done}) {
-        this.postThread({title, meetupId: this.meetup._id})
-          .then(() => {
-            this.$toasted.success('Thread Succesfuly Created!', {duration: 3000})
-        done()
-      })
+      this.postThread({title, meetupId: this.meetup._id})
+        .then(() => {
+          this.$toasted.success('Thread Succesfuly Created!', {duration: 3000})
+          done()
+        })
     }
   }
 }
