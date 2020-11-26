@@ -9,6 +9,7 @@ import PageMeetupCreate from "@/pages/PageMeetupCreate";
 import PageLogin from '@/pages/PageLogin'
 import PageRegister from '@/pages/PageRegister'
 import PageSecret from '@/pages/PageSecret'
+import PagePofile from "@/pages/PagePofile"
 import PageNotFound from '@/pages/PageNotFound'
 import PageNotAuthenticated from '@/pages/PageNotAuthenticated'
 
@@ -25,6 +26,12 @@ const router = new Router({
       path: '/find',
       name: 'PageMeetupFind',
       component: PageMeetupFind
+    },
+    {
+      path: '/me',
+      name: 'PagePofile',
+      component: PagePofile,
+      meta: {onlyAuthUser: true}
     },
     {
       path: '/meetups/new',
