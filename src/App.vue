@@ -2,7 +2,7 @@
   <div v-if="isAuthResolved && isLocationResolve" id="app">
     <TheNavbar />
     <div class="page-wrapper">
-      <router-view />
+      <router-view :key="$route.path" />
     </div>
     <TheFooter />
   </div>
@@ -27,6 +27,8 @@ export default {
   },
   created () {
     this.$store.dispatch('meta/fetchMetaData')
+
+    console.log('process.env', process.env);
   }
 }
 </script>

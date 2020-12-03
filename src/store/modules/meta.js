@@ -22,7 +22,6 @@ export default {
       return axios.get('/api/v1')
         .then(res => {
           const meta = res.data
-          console.log('meta', meta);
           commit('setItem', {item: meta, resource: 'meta'}, {root: true})
           commit('resolveLocation', true)
           return meta
