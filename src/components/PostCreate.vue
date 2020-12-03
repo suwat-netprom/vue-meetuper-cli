@@ -2,7 +2,7 @@
   <!-- <div v-with-warning:red.prevent="'What a nice day (:'"> </div> -->
   <form class="post-create">
     <div class="field">
-      <textarea v-auto-expand
+      <textarea v-autoExpand
                 v-model="text"
                 class="textarea textarea-post"
                 placeholder="Write a post"
@@ -15,9 +15,9 @@
 </template>
 
 <script>
-//import autoExpand from '@/directives/autoExpand'
+import autoExpand from '@/direatives/autoExpand'
 export default {
-  //directives: {autoExpand},
+  directives: {autoExpand},
   props: {
     threadId: {
       required: true,
