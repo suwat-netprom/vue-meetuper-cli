@@ -4,7 +4,9 @@
     <div v-if="pageLoader_isDataLoaded" class="container">
       <section class="section">
       <div class="m-b-lg">
-        <h1 class="title is-inline">Featured Meetups in "Location"</h1>
+        <h1 class="title is-inline">Featured Meetups
+          <span v-if="ipLocation">in {{ ipLocation }}</span>
+        </h1>
         <AppDropdown />
         <router-link v-if="user" :to="{name: 'PageMeetupCreate'}" class="button is-primary is-pulled-right m-r-sm">Create Meetups</router-link>
         <router-link :to="{name: 'PageMeetupFind'}"
@@ -41,6 +43,7 @@
   import MeetupItem from '@/components/MeetupItem'
   import { mapActions, mapState, mapGetters } from 'vuex'
   import PageLoader from  '@/mixins/PageLoader'
+  import { processLocation } from '@/helpers'
 
   import Vue from 'vue'
   export default {
@@ -51,7 +54,8 @@
     mixins: [PageLoader],
     computed: {
       ...mapGetters({
-        'user': 'auth/authUser'
+        'user': 'auth/authUser',
+        'ipLocation': 'meta/location'
       }),
       ...mapState({
         meetups: state => state.meetups.items,
@@ -59,7 +63,12 @@
       })
     },
     created () {
-      Promise.all([this.fetchMeetups(), this.fetchCategories()])
+      const filter = {}
+      if (this.ipLocation) {
+        filter['location'] = processLocation(this.ipLocation)
+      }
+
+      Promise.all([this.fetchMeetups({filter}), this.fetchCategories()])
         .then(() => this.pageLoader_resolveData())
         .catch((err) => {
           console.error(err)

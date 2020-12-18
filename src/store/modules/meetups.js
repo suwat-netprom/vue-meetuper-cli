@@ -40,6 +40,7 @@ export default {
         .then(res => res.data)
     },
     joinMeetup ({state, rootState, commit, dispatch}, meetupId) {
+      // We were just debugging in this lecture (:
       const user = rootState.auth.user
 
       return axiosInstance.post(`/api/v1/meetups/${meetupId}/join`)
@@ -59,17 +60,27 @@ export default {
           dispatch('auth/removeMeetupFromAuthUser', meetupId, {root: true})
 
           const joinedPeople = state.item.joinedPeople
-          const index = joinedPeople.findIndex((jUser) => jUser._id === user._id)
-
+          const index = joinedPeople.findIndex(jUser => jUser._id === user._id)
           joinedPeople.splice(index, 1)
           commit('addUsersToMeetup', joinedPeople)
-          return true
+        })
+    },
+    updateMeetup ({commit, state}, meetupData) {
+      meetupData.processedLocation = meetupData.location.toLowerCase().replace(/[\s,]+/g,'').trim()
+      return axiosInstance.patch(`/api/v1/meetups/${meetupData._id}`, meetupData)
+        .then(res => {
+          const updatedMeetup = res.data
+          commit('mergeMeetup', updatedMeetup)
+          return state.item
         })
     }
   },
   mutations: {
     addUsersToMeetup (state, joinedPeople) {
       Vue.set(state.item, 'joinedPeople', joinedPeople)
+    },
+    mergeMeetup (state, updatedMeetup) {
+      state.item = {...state.item, ...updatedMeetup}
     }
   }
 }
